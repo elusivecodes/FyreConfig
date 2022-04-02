@@ -1,0 +1,29 @@
+{
+    "name": "fyre/config",
+    "description": "A configuration library.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "elusivecodes",
+            "email": "elusivecodes@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Fyre\\Config\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "fyre/array": "^1.0",
+        "fyre/path": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9"
+    }
+}
