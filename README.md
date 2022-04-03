@@ -30,6 +30,9 @@ use Fyre\Config\Config;
 
 Add a config path.
 
+- `$path` is the path to add.
+- `$prepend` is a boolean indicating whether to prepend the file path, and will default to *false*.
+
 ```php
 Config::addPath($path, $prepend);
 ```
@@ -46,6 +49,9 @@ Config::clear();
 
 Retrieve and delete a value from the config using "dot" notation.
 
+- `$key` is the key to lookup.
+- `$default` is the default value to return, and will default to *null*.
+
 ```php
 $value = Config::consume($key, $default);
 ```
@@ -53,6 +59,8 @@ $value = Config::consume($key, $default);
 **Delete**
 
 Delete a value from the config using "dot" notation.
+
+- `$key` is the key to remove.
 
 ```php
 Config::delete($key);
@@ -62,6 +70,9 @@ Config::delete($key);
 
 Retrieve a value from the config using "dot" notation.
 
+- `$key` is the key to lookup.
+- `$default` is the default value to return, and will default to *null*.
+
 ```php
 $value = Config::get($key, $default);
 ```
@@ -69,6 +80,8 @@ $value = Config::get($key, $default);
 **Has**
 
 Determine if a value exists in the config.
+
+- `$key` is the key to check for.
 
 ```php
 $has = Config::has($key);
@@ -78,6 +91,8 @@ $has = Config::has($key);
 
 Load a file into the config.
 
+- `$file` is a string representing the config file.
+
 ```php
 Config::load($file);
 ```
@@ -85,6 +100,10 @@ Config::load($file);
 **Set**
 
 Set a config value using "dot" notation.
+
+- `$key` is the key.
+- `$value` is the value to set.
+- `$overwrite` is a boolean indicating whether previous values will be overwritten, and will default to *true*.
 
 ```php
 Config::set($key, $value, $overwrite);
