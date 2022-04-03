@@ -10,7 +10,8 @@ use
 use function
     array_replace_recursive,
     array_unshift,
-    file_exists;
+    file_exists,
+    is_array;
 
 /**
  * Config
@@ -107,6 +108,10 @@ abstract class Config
             }
 
             $config = require $filePath;
+
+            if (!is_array($config)) {
+                continue;
+            }
 
             static::$config = array_replace_recursive(static::$config, $config);
         }
