@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Fyre\Config;
 
-use
-    Fyre\Utility\Arr,
-    Fyre\Utility\Path;
+use Fyre\Utility\Arr;
+use Fyre\Utility\Path;
 
-use function
-    array_replace_recursive,
-    array_unshift,
-    file_exists,
-    is_array;
+use function array_replace_recursive;
+use function array_splice;
+use function array_unshift;
+use function file_exists;
+use function in_array;
+use function is_array;
 
 /**
  * Config
@@ -32,6 +32,10 @@ abstract class Config
     {
         $path = Path::resolve($path);
 
+        if (in_array($path, static::$paths)) {
+            return;
+        }
+
         if ($prepend) {
             array_unshift(static::$paths, $path);
         } else {
@@ -42,9 +46,16 @@ abstract class Config
     /**
      * Clear config data.
      */
-    public static function clear()
+    public static function clear(): void
     {
         static::$config = [];
+    }
+
+    /**
+     * Clear paths.
+     */
+    public static function clearPaths(): void
+    {
         static::$paths = [];
     }
 
@@ -54,7 +65,7 @@ abstract class Config
      * @param mixed $default The default value.
      * @return mixed The value.
      */
-    public static function consume(string $key, $default = null)
+    public static function consume(string $key, $default = null): mixed
     {
         $value = static::get($key, $default);
 
@@ -66,20 +77,37 @@ abstract class Config
     /**
      * Delete a value from the config using "dot" notation.
      * @param string $key The config key.
+     * @return bool TRUE if the key was deleted, otherwise FALSE.
      */
-    public static function delete(string $key): void
+    public static function delete(string $key): bool
     {
+        if (!Arr::hasDot(static::$config, $key)) {
+            return false;
+        }
+
         static::$config = Arr::forgetDot(static::$config, $key);
+
+        return true;
     }
 
     /**
      * Retrieve a value from the config using "dot" notation.
      * @param string $key The config key.
+     * @param mixed $default The default value.
      * @return mixed The config value.
      */
-    public static function get(string $key, $default = null)
+    public static function get(string $key, $default = null): mixed
     {
         return Arr::getDot(static::$config, $key, $default);
+    }
+
+    /**
+     * Get the paths.
+     * @return array The paths.
+     */
+    public static function getPaths(): array
+    {
+        return static::$paths;
     }
 
     /**
@@ -118,12 +146,34 @@ abstract class Config
     }
 
     /**
+     * Remove a path.
+     * @param string $path The path to remove.
+     * @return bool TRUE if the path was removed, otherwise FALSE.
+     */
+    public static function removePath(string $path): bool
+    {
+        $path = Path::resolve($path);
+
+        foreach (static::$paths AS $i => $otherPath) {
+            if ($otherPath !== $path) {
+                continue;
+            }
+
+            array_splice(static::$paths, $i, 1);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Set a config value using "dot" notation.
      * @param string $key The config key.
      * @param mixed $value The config value.
      * @param bool $overwrite Whether to overwrite previous values.
      */
-    public static function set(string $key, $value, $overwrite = true): void
+    public static function set(string $key, $value, bool $overwrite = true): void
     {
         static::$config = Arr::setDot(static::$config, $key, $value, $overwrite);
     }

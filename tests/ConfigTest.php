@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use
-    Fyre\Config\Config,
-    PHPUnit\Framework\TestCase;
+use Fyre\Config\Config;
+use Fyre\Utility\Path;
+use PHPUnit\Framework\TestCase;
 
 final class ConfigTest extends TestCase
 {
@@ -42,6 +42,36 @@ final class ConfigTest extends TestCase
         $this->assertSame(
             'Value 1',
             Config::get('value')
+        );
+    }
+
+    public function testAddPathDuplicate(): void
+    {
+        Config::addPath('tests/config/dir1');
+        Config::addPath('tests/config/dir2');
+        Config::addPath('tests/config/dir1');
+
+        $this->assertSame(
+            [
+                Path::resolve('tests/config/dir1'),
+                Path::resolve('tests/config/dir2')
+            ],
+            Config::getPaths()
+        );
+    }
+
+    public function testAddPathPrependDuplicate(): void
+    {
+        Config::addPath('tests/config/dir1');
+        Config::addPath('tests/config/dir2');
+        Config::addPath('tests/config/dir2', true);
+
+        $this->assertSame(
+            [
+                Path::resolve('tests/config/dir1'),
+                Path::resolve('tests/config/dir2')
+            ],
+            Config::getPaths()
         );
     }
 
@@ -91,7 +121,10 @@ final class ConfigTest extends TestCase
     public function testDelete(): void
     {
         Config::set('test', 'Test');
-        Config::delete('test');
+
+        $this->assertTrue(
+            Config::delete('test')
+        );
 
         $this->assertNull(
             Config::get('test')
@@ -101,19 +134,21 @@ final class ConfigTest extends TestCase
     public function testDeleteDeep(): void
     {
         Config::set('test.deep', 'Test');
-        Config::delete('test.deep');
+
+        $this->assertTrue(
+            Config::delete('test.deep')
+        );
 
         $this->assertNull(
             Config::get('test.deep')
         );
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testDeleteInvalid(): void
     {
-        Config::delete('test');
+        $this->assertFalse(
+            Config::delete('test')
+        );
     }
 
     public function testGetDeep(): void
@@ -157,6 +192,26 @@ final class ConfigTest extends TestCase
         );
     }
 
+    public function testRemovePath(): void
+    {
+        Config::addPath('tests/config/dir1');
+
+        $this->assertTrue(
+            Config::removePath('tests/config/dir1')
+        );
+
+        $this->assertEmpty(
+            Config::getPaths()
+        );
+    }
+
+    public function testRemovePathInvalid(): void
+    {
+        $this->assertFalse(
+            Config::removePath('tests/config/dir1')
+        );
+    }
+
     public function testSet(): void
     {
         Config::set('test', 'Test');
@@ -193,6 +248,7 @@ final class ConfigTest extends TestCase
     protected function setUp(): void
     {
         Config::clear();
+        Config::clearPaths();
     }
 
 }

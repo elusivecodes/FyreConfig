@@ -45,6 +45,14 @@ Clear config data.
 Config::clear();
 ```
 
+**Clear Paths**
+
+Clear the paths.
+
+```php
+Config::clearPaths();
+```
+
 **Consume**
 
 Retrieve and delete a value from the config using "dot" notation.
@@ -63,7 +71,7 @@ Delete a value from the config using "dot" notation.
 - `$key` is the key to remove.
 
 ```php
-Config::delete($key);
+$deleted = Config::delete($key);
 ```
 
 **Get**
@@ -75,6 +83,14 @@ Retrieve a value from the config using "dot" notation.
 
 ```php
 $value = Config::get($key, $default);
+```
+
+**Get Paths**
+
+Get the paths.
+
+```php
+$paths = Config::getPaths();
 ```
 
 **Has**
@@ -95,6 +111,16 @@ Load a file into the config.
 
 ```php
 Config::load($file);
+```
+
+**Remove Path**
+
+Remove a path.
+
+- `$path` is the path to remove.
+
+```php
+$removed = Config::removePath($path);
 ```
 
 **Set**
