@@ -1,6 +1,6 @@
 # FyreConfig
 
-**FyreConfig** is a free, configuration library for *PHP*.
+**FyreConfig** is a free, open-source configuration library for *PHP*.
 
 
 ## Table Of Contents
