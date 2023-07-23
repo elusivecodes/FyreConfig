@@ -248,7 +248,6 @@ final class ConfigTest extends TestCase
     protected function setUp(): void
     {
         Config::clear();
-        Config::clearPaths();
     }
 
 }

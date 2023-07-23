@@ -48,15 +48,8 @@ abstract class Config
      */
     public static function clear(): void
     {
-        static::$config = [];
-    }
-
-    /**
-     * Clear paths.
-     */
-    public static function clearPaths(): void
-    {
         static::$paths = [];
+        static::$config = [];
     }
 
     /**

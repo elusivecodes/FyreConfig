@@ -45,14 +45,6 @@ Clear config data.
 Config::clear();
 ```
 
-**Clear Paths**
-
-Clear the paths.
-
-```php
-Config::clearPaths();
-```
-
 **Consume**
 
 Retrieve and delete a value from the config using "dot" notation.
