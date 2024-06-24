@@ -9,34 +9,14 @@ use PHPUnit\Framework\TestCase;
 
 final class ConfigTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        Config::clear();
+    }
 
     public function testAddPath(): void
     {
         Config::addPath('tests/config/dir1');
-        Config::load('config');
-
-        $this->assertSame(
-            'Value 1',
-            Config::get('value')
-        );
-    }
-
-    public function testAddPaths(): void
-    {
-        Config::addPath('tests/config/dir1');
-        Config::addPath('tests/config/dir2');
-        Config::load('config');
-
-        $this->assertSame(
-            'Value 2',
-            Config::get('value')
-        );
-    }
-
-    public function testAddPathPrepend(): void
-    {
-        Config::addPath('tests/config/dir1');
-        Config::addPath('tests/config/dir2', true);
         Config::load('config');
 
         $this->assertSame(
@@ -60,6 +40,18 @@ final class ConfigTest extends TestCase
         );
     }
 
+    public function testAddPathPrepend(): void
+    {
+        Config::addPath('tests/config/dir1');
+        Config::addPath('tests/config/dir2', true);
+        Config::load('config');
+
+        $this->assertSame(
+            'Value 1',
+            Config::get('value')
+        );
+    }
+
     public function testAddPathPrependDuplicate(): void
     {
         Config::addPath('tests/config/dir1');
@@ -72,6 +64,18 @@ final class ConfigTest extends TestCase
                 Path::resolve('tests/config/dir2')
             ],
             Config::getPaths()
+        );
+    }
+
+    public function testAddPaths(): void
+    {
+        Config::addPath('tests/config/dir1');
+        Config::addPath('tests/config/dir2');
+        Config::load('config');
+
+        $this->assertSame(
+            'Value 2',
+            Config::get('value')
         );
     }
 
@@ -103,18 +107,18 @@ final class ConfigTest extends TestCase
         );
     }
 
-    public function testConsumeInvalid(): void
-    {
-        $this->assertNull(
-            Config::consume('test')
-        );
-    }
-
     public function testConsumeDefault(): void
     {
         $this->assertSame(
             'Test',
             Config::consume('test', 'Test')
+        );
+    }
+
+    public function testConsumeInvalid(): void
+    {
+        $this->assertNull(
+            Config::consume('test')
         );
     }
 
@@ -161,18 +165,18 @@ final class ConfigTest extends TestCase
         );
     }
 
-    public function testGetInvalid(): void
-    {
-        $this->assertNull(
-            Config::get('test')
-        );
-    }
-
     public function testGetDefault(): void
     {
         $this->assertSame(
             'Test',
             Config::get('test', 'Test')
+        );
+    }
+
+    public function testGetInvalid(): void
+    {
+        $this->assertNull(
+            Config::get('test')
         );
     }
 
@@ -244,10 +248,4 @@ final class ConfigTest extends TestCase
             Config::get('test')
         );
     }
-
-    protected function setUp(): void
-    {
-        Config::clear();
-    }
-
 }

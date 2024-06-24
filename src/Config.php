@@ -18,10 +18,8 @@ use function is_array;
  */
 abstract class Config
 {
-
-    protected static array $paths = [];
-
     protected static array $config = [];
+    protected static array $paths = [];
 
     /**
      * Add a config path.
@@ -121,7 +119,7 @@ abstract class Config
     {
         $file .= '.php';
 
-        foreach (static::$paths AS $path) {
+        foreach (static::$paths as $path) {
             $filePath = Path::join($path, $file);
 
             if (!file_exists($filePath)) {
@@ -147,7 +145,7 @@ abstract class Config
     {
         $path = Path::resolve($path);
 
-        foreach (static::$paths AS $i => $otherPath) {
+        foreach (static::$paths as $i => $otherPath) {
             if ($otherPath !== $path) {
                 continue;
             }
@@ -170,5 +168,4 @@ abstract class Config
     {
         static::$config = Arr::setDot(static::$config, $key, $value, $overwrite);
     }
-
 }
