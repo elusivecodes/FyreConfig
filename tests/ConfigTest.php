@@ -9,11 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 final class ConfigTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        Config::clear();
-    }
-
     public function testAddPath(): void
     {
         Config::addPath('tests/config/dir1');
@@ -34,7 +29,7 @@ final class ConfigTest extends TestCase
         $this->assertSame(
             [
                 Path::resolve('tests/config/dir1'),
-                Path::resolve('tests/config/dir2')
+                Path::resolve('tests/config/dir2'),
             ],
             Config::getPaths()
         );
@@ -61,7 +56,7 @@ final class ConfigTest extends TestCase
         $this->assertSame(
             [
                 Path::resolve('tests/config/dir1'),
-                Path::resolve('tests/config/dir2')
+                Path::resolve('tests/config/dir2'),
             ],
             Config::getPaths()
         );
@@ -232,7 +227,7 @@ final class ConfigTest extends TestCase
 
         $this->assertSame(
             [
-                'deep' => 'Test'
+                'deep' => 'Test',
             ],
             Config::get('test')
         );
@@ -247,5 +242,10 @@ final class ConfigTest extends TestCase
             'Test 1',
             Config::get('test')
         );
+    }
+
+    protected function setUp(): void
+    {
+        Config::clear();
     }
 }

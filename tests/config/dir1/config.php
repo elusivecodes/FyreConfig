@@ -2,5 +2,5 @@
 declare(strict_types=1);
 
 return [
-    'value' => 'Value 1'
+    'value' => 'Value 1',
 ];

@@ -19,10 +19,12 @@ use function is_array;
 abstract class Config
 {
     protected static array $config = [];
+
     protected static array $paths = [];
 
     /**
      * Add a config path.
+     *
      * @param string $path The path to add.
      * @param bool $prepend Whether to prepend the path.
      */
@@ -52,6 +54,7 @@ abstract class Config
 
     /**
      * Retrieve and delete a value from the config using "dot" notation.
+     *
      * @param string $key The config key.
      * @param mixed $default The default value.
      * @return mixed The value.
@@ -67,6 +70,7 @@ abstract class Config
 
     /**
      * Delete a value from the config using "dot" notation.
+     *
      * @param string $key The config key.
      * @return bool TRUE if the key was deleted, otherwise FALSE.
      */
@@ -83,6 +87,7 @@ abstract class Config
 
     /**
      * Retrieve a value from the config using "dot" notation.
+     *
      * @param string $key The config key.
      * @param mixed $default The default value.
      * @return mixed The config value.
@@ -94,6 +99,7 @@ abstract class Config
 
     /**
      * Get the paths.
+     *
      * @return array The paths.
      */
     public static function getPaths(): array
@@ -103,6 +109,7 @@ abstract class Config
 
     /**
      * Determine if a value exists in the config.
+     *
      * @param string $key The config key.
      * @return bool TRUE if the item exists, otherwise FALSE.
      */
@@ -113,7 +120,6 @@ abstract class Config
 
     /**
      * Load a file into the config.
-     * @param string $file
      */
     public static function load(string $file): void
     {
@@ -138,6 +144,7 @@ abstract class Config
 
     /**
      * Remove a path.
+     *
      * @param string $path The path to remove.
      * @return bool TRUE if the path was removed, otherwise FALSE.
      */
@@ -160,6 +167,7 @@ abstract class Config
 
     /**
      * Set a config value using "dot" notation.
+     *
      * @param string $key The config key.
      * @param mixed $value The config value.
      * @param bool $overwrite Whether to overwrite previous values.
