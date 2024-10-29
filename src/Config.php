@@ -16,40 +16,53 @@ use function is_array;
 /**
  * Config
  */
-abstract class Config
+class Config
 {
-    protected static array $config = [];
+    protected array $config = [];
 
-    protected static array $paths = [];
+    protected array $paths = [];
+
+    /**
+     * New Config constructor.
+     *
+     * @param array $paths The paths.
+     */
+    public function __construct(array $paths = [])
+    {
+        foreach ($paths as $path) {
+            $this->addPath($path);
+        }
+    }
 
     /**
      * Add a config path.
      *
      * @param string $path The path to add.
      * @param bool $prepend Whether to prepend the path.
+     * @return static The Config.
      */
-    public static function addPath(string $path, bool $prepend = false): void
+    public function addPath(string $path, bool $prepend = false): static
     {
         $path = Path::resolve($path);
 
-        if (in_array($path, static::$paths)) {
-            return;
+        if (!in_array($path, $this->paths)) {
+            if ($prepend) {
+                array_unshift($this->paths, $path);
+            } else {
+                $this->paths[] = $path;
+            }
         }
 
-        if ($prepend) {
-            array_unshift(static::$paths, $path);
-        } else {
-            static::$paths[] = $path;
-        }
+        return $this;
     }
 
     /**
      * Clear config data.
      */
-    public static function clear(): void
+    public function clear(): void
     {
-        static::$paths = [];
-        static::$config = [];
+        $this->paths = [];
+        $this->config = [];
     }
 
     /**
@@ -59,11 +72,11 @@ abstract class Config
      * @param mixed $default The default value.
      * @return mixed The value.
      */
-    public static function consume(string $key, $default = null): mixed
+    public function consume(string $key, $default = null): mixed
     {
-        $value = static::get($key, $default);
+        $value = $this->get($key, $default);
 
-        static::delete($key);
+        $this->delete($key);
 
         return $value;
     }
@@ -72,17 +85,13 @@ abstract class Config
      * Delete a value from the config using "dot" notation.
      *
      * @param string $key The config key.
-     * @return bool TRUE if the key was deleted, otherwise FALSE.
+     * @return static The Config.
      */
-    public static function delete(string $key): bool
+    public function delete(string $key): static
     {
-        if (!Arr::hasDot(static::$config, $key)) {
-            return false;
-        }
+        $this->config = Arr::forgetDot($this->config, $key);
 
-        static::$config = Arr::forgetDot(static::$config, $key);
-
-        return true;
+        return $this;
     }
 
     /**
@@ -92,9 +101,9 @@ abstract class Config
      * @param mixed $default The default value.
      * @return mixed The config value.
      */
-    public static function get(string $key, $default = null): mixed
+    public function get(string $key, $default = null): mixed
     {
-        return Arr::getDot(static::$config, $key, $default);
+        return Arr::getDot($this->config, $key, $default);
     }
 
     /**
@@ -102,9 +111,9 @@ abstract class Config
      *
      * @return array The paths.
      */
-    public static function getPaths(): array
+    public function getPaths(): array
     {
-        return static::$paths;
+        return $this->paths;
     }
 
     /**
@@ -113,19 +122,21 @@ abstract class Config
      * @param string $key The config key.
      * @return bool TRUE if the item exists, otherwise FALSE.
      */
-    public static function has(string $key): bool
+    public function has(string $key): bool
     {
-        return Arr::hasDot(static::$config, $key);
+        return Arr::hasDot($this->config, $key);
     }
 
     /**
      * Load a file into the config.
+     *
+     * @return static The Config.
      */
-    public static function load(string $file): void
+    public function load(string $file): static
     {
         $file .= '.php';
 
-        foreach (static::$paths as $path) {
+        foreach ($this->paths as $path) {
             $filePath = Path::join($path, $file);
 
             if (!file_exists($filePath)) {
@@ -138,31 +149,32 @@ abstract class Config
                 continue;
             }
 
-            static::$config = array_replace_recursive(static::$config, $config);
+            $this->config = array_replace_recursive($this->config, $config);
         }
+
+        return $this;
     }
 
     /**
      * Remove a path.
      *
      * @param string $path The path to remove.
-     * @return bool TRUE if the path was removed, otherwise FALSE.
+     * @return static The Config.
      */
-    public static function removePath(string $path): bool
+    public function removePath(string $path): static
     {
         $path = Path::resolve($path);
 
-        foreach (static::$paths as $i => $otherPath) {
+        foreach ($this->paths as $i => $otherPath) {
             if ($otherPath !== $path) {
                 continue;
             }
 
-            array_splice(static::$paths, $i, 1);
-
-            return true;
+            array_splice($this->paths, $i, 1);
+            break;
         }
 
-        return false;
+        return $this;
     }
 
     /**
@@ -171,9 +183,12 @@ abstract class Config
      * @param string $key The config key.
      * @param mixed $value The config value.
      * @param bool $overwrite Whether to overwrite previous values.
+     * @return static The Config.
      */
-    public static function set(string $key, $value, bool $overwrite = true): void
+    public function set(string $key, $value, bool $overwrite = true): static
     {
-        static::$config = Arr::setDot(static::$config, $key, $value, $overwrite);
+        $this->config = Arr::setDot($this->config, $key, $value, $overwrite);
+
+        return $this;
     }
 }

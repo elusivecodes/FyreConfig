@@ -9,96 +9,105 @@ use PHPUnit\Framework\TestCase;
 
 final class ConfigTest extends TestCase
 {
+    protected Config $config;
+
     public function testAddPath(): void
     {
-        Config::addPath('tests/config/dir1');
-        Config::load('config');
+        $this->assertSame(
+            $this->config,
+            $this->config->addPath('tests/config/dir1')
+        );
+
+        $this->assertSame(
+            $this->config,
+            $this->config->load('config')
+        );
 
         $this->assertSame(
             'Value 1',
-            Config::get('value')
+            $this->config->get('value')
         );
     }
 
     public function testAddPathDuplicate(): void
     {
-        Config::addPath('tests/config/dir1');
-        Config::addPath('tests/config/dir2');
-        Config::addPath('tests/config/dir1');
+        $this->config->addPath('tests/config/dir1');
+        $this->config->addPath('tests/config/dir2');
+        $this->config->addPath('tests/config/dir1');
 
         $this->assertSame(
             [
                 Path::resolve('tests/config/dir1'),
                 Path::resolve('tests/config/dir2'),
             ],
-            Config::getPaths()
+            $this->config->getPaths()
         );
     }
 
     public function testAddPathPrepend(): void
     {
-        Config::addPath('tests/config/dir1');
-        Config::addPath('tests/config/dir2', true);
-        Config::load('config');
+        $this->config->addPath('tests/config/dir1');
+        $this->config->addPath('tests/config/dir2', true);
+        $this->config->load('config');
 
         $this->assertSame(
             'Value 1',
-            Config::get('value')
+            $this->config->get('value')
         );
     }
 
     public function testAddPathPrependDuplicate(): void
     {
-        Config::addPath('tests/config/dir1');
-        Config::addPath('tests/config/dir2');
-        Config::addPath('tests/config/dir2', true);
+        $this->config->addPath('tests/config/dir1');
+        $this->config->addPath('tests/config/dir2');
+        $this->config->addPath('tests/config/dir2', true);
 
         $this->assertSame(
             [
                 Path::resolve('tests/config/dir1'),
                 Path::resolve('tests/config/dir2'),
             ],
-            Config::getPaths()
+            $this->config->getPaths()
         );
     }
 
     public function testAddPaths(): void
     {
-        Config::addPath('tests/config/dir1');
-        Config::addPath('tests/config/dir2');
-        Config::load('config');
+        $this->config->addPath('tests/config/dir1');
+        $this->config->addPath('tests/config/dir2');
+        $this->config->load('config');
 
         $this->assertSame(
             'Value 2',
-            Config::get('value')
+            $this->config->get('value')
         );
     }
 
     public function testConsume(): void
     {
-        Config::set('test', 'Test');
+        $this->config->set('test', 'Test');
 
         $this->assertSame(
             'Test',
-            Config::consume('test')
+            $this->config->consume('test')
         );
 
         $this->assertFalse(
-            Config::has('test')
+            $this->config->has('test')
         );
     }
 
     public function testConsumeDeep(): void
     {
-        Config::set('test.deep', 'Test');
+        $this->config->set('test.deep', 'Test');
 
         $this->assertSame(
             'Test',
-            Config::consume('test.deep')
+            $this->config->consume('test.deep')
         );
 
         $this->assertFalse(
-            Config::has('test.deep')
+            $this->config->has('test.deep')
         );
     }
 
@@ -106,57 +115,57 @@ final class ConfigTest extends TestCase
     {
         $this->assertSame(
             'Test',
-            Config::consume('test', 'Test')
+            $this->config->consume('test', 'Test')
         );
     }
 
     public function testConsumeInvalid(): void
     {
         $this->assertNull(
-            Config::consume('test')
+            $this->config->consume('test')
         );
     }
 
     public function testDelete(): void
     {
-        Config::set('test', 'Test');
+        $this->config->set('test', 'Test');
 
-        $this->assertTrue(
-            Config::delete('test')
+        $this->assertSame(
+            $this->config,
+            $this->config->delete('test')
         );
 
         $this->assertNull(
-            Config::get('test')
+            $this->config->get('test')
         );
     }
 
     public function testDeleteDeep(): void
     {
-        Config::set('test.deep', 'Test');
+        $this->config->set('test.deep', 'Test');
 
-        $this->assertTrue(
-            Config::delete('test.deep')
-        );
+        $this->config->delete('test.deep');
 
         $this->assertNull(
-            Config::get('test.deep')
+            $this->config->get('test.deep')
         );
     }
 
     public function testDeleteInvalid(): void
     {
-        $this->assertFalse(
-            Config::delete('test')
+        $this->assertSame(
+            $this->config,
+            $this->config->delete('test')
         );
     }
 
     public function testGetDeep(): void
     {
-        Config::set('test.deep', 'Test');
+        $this->config->set('test.deep', 'Test');
 
         $this->assertSame(
             'Test',
-            Config::get('test.deep')
+            $this->config->get('test.deep')
         );
     }
 
@@ -164,88 +173,93 @@ final class ConfigTest extends TestCase
     {
         $this->assertSame(
             'Test',
-            Config::get('test', 'Test')
+            $this->config->get('test', 'Test')
         );
     }
 
     public function testGetInvalid(): void
     {
         $this->assertNull(
-            Config::get('test')
+            $this->config->get('test')
         );
     }
 
     public function testHas(): void
     {
-        Config::set('test', 'Test');
+        $this->config->set('test', 'Test');
 
         $this->assertTrue(
-            Config::has('test')
+            $this->config->has('test')
         );
     }
 
     public function testHasInvalid(): void
     {
         $this->assertFalse(
-            Config::has('test')
+            $this->config->has('test')
         );
     }
 
     public function testRemovePath(): void
     {
-        Config::addPath('tests/config/dir1');
+        $this->config->addPath('tests/config/dir1');
 
-        $this->assertTrue(
-            Config::removePath('tests/config/dir1')
+        $this->assertSame(
+            $this->config,
+            $this->config->removePath('tests/config/dir1')
         );
 
         $this->assertEmpty(
-            Config::getPaths()
+            $this->config->getPaths()
         );
     }
 
     public function testRemovePathInvalid(): void
     {
-        $this->assertFalse(
-            Config::removePath('tests/config/dir1')
+        $this->assertSame(
+            $this->config,
+            $this->config->removePath('tests/config/dir1')
         );
     }
 
     public function testSet(): void
     {
-        Config::set('test', 'Test');
+        $this->assertSame(
+            $this->config,
+            $this->config->set('test', 'Test')
+        );
 
         $this->assertSame(
             'Test',
-            Config::get('test')
+            $this->config->get('test')
         );
     }
 
     public function testSetDeep(): void
     {
-        Config::set('test.deep', 'Test');
+        $this->config->set('test.deep', 'Test');
 
         $this->assertSame(
             [
                 'deep' => 'Test',
             ],
-            Config::get('test')
+            $this->config->get('test')
         );
     }
 
     public function testSetOverwrite(): void
     {
-        Config::set('test', 'Test 1');
-        Config::set('test', 'Test 2', false);
+        $this->config->set('test', 'Test 1');
+        $this->config->set('test', 'Test 2', false);
 
         $this->assertSame(
             'Test 1',
-            Config::get('test')
+            $this->config->get('test')
         );
     }
 
     protected function setUp(): void
     {
-        Config::clear();
+        $this->config = new Config();
     }
 }

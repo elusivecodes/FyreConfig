@@ -5,7 +5,8 @@
 
 ## Table Of Contents
 - [Installation](#installation)
-- [Methods](#methods)
+- [Config Creation](#config-creation)
+- [Config Methods](#config-methods)
 
 
 
@@ -24,7 +25,16 @@ use Fyre\Config\Config;
 ```
 
 
-## Methods
+## Config Creation
+
+- `$paths` is an array containing the paths.
+
+```php
+$config = new Config($paths);
+```
+
+
+## Config Methods
 
 **Add Path**
 
@@ -34,7 +44,7 @@ Add a config path.
 - `$prepend` is a boolean indicating whether to prepend the file path, and will default to *false*.
 
 ```php
-Config::addPath($path, $prepend);
+$config->addPath($path, $prepend);
 ```
 
 **Clear**
@@ -42,7 +52,7 @@ Config::addPath($path, $prepend);
 Clear config data.
 
 ```php
-Config::clear();
+$config->clear();
 ```
 
 **Consume**
@@ -53,7 +63,7 @@ Retrieve and delete a value from the config using "dot" notation.
 - `$default` is the default value to return, and will default to *null*.
 
 ```php
-$value = Config::consume($key, $default);
+$value = $config->consume($key, $default);
 ```
 
 **Delete**
@@ -63,7 +73,7 @@ Delete a value from the config using "dot" notation.
 - `$key` is the key to remove.
 
 ```php
-$deleted = Config::delete($key);
+$config->delete($key);
 ```
 
 **Get**
@@ -74,7 +84,7 @@ Retrieve a value from the config using "dot" notation.
 - `$default` is the default value to return, and will default to *null*.
 
 ```php
-$value = Config::get($key, $default);
+$value = $config->get($key, $default);
 ```
 
 **Get Paths**
@@ -82,7 +92,7 @@ $value = Config::get($key, $default);
 Get the paths.
 
 ```php
-$paths = Config::getPaths();
+$paths = $config->getPaths();
 ```
 
 **Has**
@@ -92,7 +102,7 @@ Determine if a value exists in the config.
 - `$key` is the key to check for.
 
 ```php
-$has = Config::has($key);
+$has = $config->has($key);
 ```
 
 **Load**
@@ -102,7 +112,7 @@ Load a file into the config.
 - `$file` is a string representing the config file.
 
 ```php
-Config::load($file);
+$config->load($file);
 ```
 
 **Remove Path**
@@ -112,7 +122,7 @@ Remove a path.
 - `$path` is the path to remove.
 
 ```php
-$removed = Config::removePath($path);
+$config->removePath($path);
 ```
 
 **Set**
@@ -124,5 +134,5 @@ Set a config value using "dot" notation.
 - `$overwrite` is a boolean indicating whether previous values will be overwritten, and will default to *true*.
 
 ```php
-Config::set($key, $value, $overwrite);
+$config->set($key, $value, $overwrite);
 ```
