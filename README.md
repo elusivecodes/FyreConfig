@@ -5,8 +5,8 @@
 
 ## Table Of Contents
 - [Installation](#installation)
-- [Config Creation](#config-creation)
-- [Config Methods](#config-methods)
+- [Basic Usage](#basic-usage)
+- [Methods](#methods)
 
 
 
@@ -25,7 +25,7 @@ use Fyre\Config\Config;
 ```
 
 
-## Config Creation
+## Basic Usage
 
 - `$paths` is an array containing the paths.
 
@@ -34,7 +34,7 @@ $config = new Config($paths);
 ```
 
 
-## Config Methods
+## Methods
 
 **Add Path**
 
