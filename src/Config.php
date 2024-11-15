@@ -23,18 +23,6 @@ class Config
     protected array $paths = [];
 
     /**
-     * New Config constructor.
-     *
-     * @param array $paths The paths.
-     */
-    public function __construct(array $paths = [])
-    {
-        foreach ($paths as $path) {
-            $this->addPath($path);
-        }
-    }
-
-    /**
      * Add a config path.
      *
      * @param string $path The path to add.

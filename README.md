@@ -27,10 +27,16 @@ use Fyre\Config\Config;
 
 ## Basic Usage
 
-- `$paths` is an array containing the paths.
+```php
+$config = new Config();
+```
+
+**Autoloading**
+
+It is recommended to bind the *Config* to the [*Container*](https://github.com/elusivecodes/FyreContainer) as a singleton.
 
 ```php
-$config = new Config($paths);
+$container->singleton(Config::class);
 ```
 
 
