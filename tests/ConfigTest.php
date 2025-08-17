@@ -5,7 +5,10 @@ namespace Tests;
 
 use Fyre\Config\Config;
 use Fyre\Utility\Path;
+use Fyre\Utility\Traits\MacroTrait;
 use PHPUnit\Framework\TestCase;
+
+use function class_uses;
 
 final class ConfigTest extends TestCase
 {
@@ -197,6 +200,14 @@ final class ConfigTest extends TestCase
     {
         $this->assertFalse(
             $this->config->has('test')
+        );
+    }
+
+    public function testMacroable(): void
+    {
+        $this->assertContains(
+            MacroTrait::class,
+            class_uses(Config::class)
         );
     }
 

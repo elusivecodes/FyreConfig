@@ -5,6 +5,7 @@ namespace Fyre\Config;
 
 use Fyre\Utility\Arr;
 use Fyre\Utility\Path;
+use Fyre\Utility\Traits\MacroTrait;
 
 use function array_replace_recursive;
 use function array_splice;
@@ -18,6 +19,8 @@ use function is_array;
  */
 class Config
 {
+    use MacroTrait;
+
     protected array $config = [];
 
     protected array $paths = [];
