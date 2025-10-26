@@ -20,7 +20,7 @@
         }
     },
     "require": {
-        "fyre/array": "^2.0",
+        "fyre/array": "^3.0",
         "fyre/macro": "^2.0",
         "fyre/path": "^3.0"
     },

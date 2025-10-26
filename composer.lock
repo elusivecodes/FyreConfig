@@ -4,21 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f3a53887247b448aeb9805cb9a5ac368",
+    "content-hash": "0be10dd3fa624589a0a8b62c34aba918",
     "packages": [
         {
             "name": "fyre/array",
-            "version": "v2.1.2",
+            "version": "v3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/elusivecodes/FyreArray.git",
-                "reference": "703919cb7f9128b4f3a4edcd7ae4e6cad16a5719"
+                "reference": "693df5c7919a852aebd5e6c84dec58cba6217595"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elusivecodes/FyreArray/zipball/703919cb7f9128b4f3a4edcd7ae4e6cad16a5719",
-                "reference": "703919cb7f9128b4f3a4edcd7ae4e6cad16a5719",
+                "url": "https://api.github.com/repos/elusivecodes/FyreArray/zipball/693df5c7919a852aebd5e6c84dec58cba6217595",
+                "reference": "693df5c7919a852aebd5e6c84dec58cba6217595",
                 "shasum": ""
+            },
+            "require": {
+                "fyre/macro": "^2.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.59",
@@ -44,9 +47,9 @@
             "description": "An array utility library.",
             "support": {
                 "issues": "https://github.com/elusivecodes/FyreArray/issues",
-                "source": "https://github.com/elusivecodes/FyreArray/tree/v2.1.2"
+                "source": "https://github.com/elusivecodes/FyreArray/tree/v3.0.2"
             },
-            "time": "2025-07-27T10:59:54+00:00"
+            "time": "2025-10-22T11:51:10+00:00"
         },
         {
             "name": "fyre/macro",
